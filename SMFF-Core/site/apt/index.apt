@@ -1,0 +1,8 @@
+ -----
+ Core
+ -----
+ 
+Introduction
+
+
+ The Core module contains the system model classes, the extension points and the XML exporter. It does not contain any other "functionality". If you would like to use SMFF to generate testcases please checkout the <<<SystemFactories>>> package in addition to the <<<Core>>> package.
