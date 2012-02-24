@@ -1,5 +1,8 @@
 package org.tubs.epoc.SMFF.ModelElements.Application;
 
+import org.jdom.Element;
+import org.tubs.epoc.SMFF.ImportExport.XML.XMLSaveable;
+
 /**
  * PJdTimingBehavior is a timing behavior implementation which is extended from 
  * {@link AbstractTimingBehavior AbstractTimingBehavior} and may be attached to 
@@ -9,7 +12,7 @@ package org.tubs.epoc.SMFF.ModelElements.Application;
  * @see AbstractTimingBehavior
  *
  */
-public class PJdTimingBehavior extends AbstractTimingBehavior{  
+public class PJdTimingBehavior extends AbstractTimingBehavior implements XMLSaveable{  
   private int period;
   private int jitter;
   private int dmin;
@@ -31,6 +34,31 @@ public class PJdTimingBehavior extends AbstractTimingBehavior{
   public PJdTimingBehavior(){
     this.setAssertion(0, 0, 0);
   }  
+  
+
+  public PJdTimingBehavior(Element element){
+    super();
+    String periodString = element.getAttributeValue("period");
+    String jitterString = element.getAttributeValue("jitter");
+    String dminString = element.getAttributeValue("dmin");
+    if(periodString!=null &&
+       jitterString!=null &&
+       dminString!=null){
+      this.period = Integer.valueOf(periodString);
+      this.jitter = Integer.valueOf(jitterString);
+      this.dmin = Integer.valueOf(dminString);
+    }
+  }
+
+  @Override
+  public Element toXML() {
+    Element root = new Element("PJdTimingBehavior");
+    root.setAttribute("classname", this.getClass().getName());
+    root.setAttribute("period", String.valueOf(this.period));
+    root.setAttribute("jitter", String.valueOf(this.jitter));
+    root.setAttribute("dmin", String.valueOf(this.dmin));
+    return root;
+  }
   
   /**
    * Setter and manipulator value for the certain properties of the timing bahavior.
@@ -98,5 +126,20 @@ public class PJdTimingBehavior extends AbstractTimingBehavior{
    */
   public String toString(){
     return "P:"+period+" J:"+jitter+" D_min:"+dmin;
+  }
+
+  @Override
+  public boolean isCloneable() {
+    return true;
+  }
+
+  @Override
+  public boolean isOverwrite() {
+    return true;
+  }
+
+  @Override
+  public boolean isIgnoreExisiting() {
+    return false;
   }
 }
